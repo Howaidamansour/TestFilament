@@ -21,12 +21,14 @@ class CityResource extends Resource
     protected static ?string $model = City::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
+    public static function getNavigationLabel (): string {
+        return __('form.city');
+      }
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                TextInput::make('name')
+                TextInput::make('name')->label(__('form.name'))
             ]);
     }
 
@@ -35,7 +37,7 @@ class CityResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('id'),
-                TextColumn::make('name'),
+                TextColumn::make('name')->label(__('form.city')),
             ])
             ->filters([
                 //
@@ -64,5 +66,13 @@ class CityResource extends Resource
             'create' => Pages\CreateCity::route('/create'),
             'edit' => Pages\EditCity::route('/{record}/edit'),
         ];
+    }
+
+    public static function getModelLabel () :string {
+        return __('form.city');
+    }
+
+    public static function getPluraModelLabel (): string {
+        return __('form.city');
     }
 }

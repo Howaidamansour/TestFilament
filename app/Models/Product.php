@@ -16,7 +16,8 @@ class Product extends Model
         'price',
         'quantity',
         'category_id',
-        'image'
+        'image',
+        'branch_id'
     ];
 
     public function category () {
@@ -25,5 +26,9 @@ class Product extends Model
 
     public function image () {
         return $this->hasMany(Image::class);
+    }
+
+    public function branch () {
+        return $this->belongsTo(Branch::class);
     }
 }

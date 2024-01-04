@@ -29,7 +29,8 @@ class ProductRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('product')
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
+                Tables\Columns\TextColumn::make('name')
+                ->label(__('form.product')),
             ])
             ->filters([
                 //

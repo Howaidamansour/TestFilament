@@ -11,6 +11,7 @@ class CreateBranch extends CreateRecord
     protected static string $resource = BranchResource::class;
     protected function mutateFormDataBeforeCreate(array $data): array
     {
+        // dd($data);
     
         return $data;
     }

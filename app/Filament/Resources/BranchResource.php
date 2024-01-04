@@ -24,20 +24,26 @@ class BranchResource extends Resource
     protected static ?string $model = Branch::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationLabel = 'Branch';
 
+   public static function getNavigationLabel (): string {
+     return __('form.branch');
+   }
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                TextInput::make('name')->required(),
+                TextInput::make('name')
+                ->label( __('form.branch_name'))->required(),
 
                 Select::make('city_id')->relationship('city', 'name')
                       ->searchable()
                       ->preload()
-                      ->required(),
+                      ->required()
+                      ->label(__('form.city')),
 
                 Map::make("adddress")
-                      ->label(__("address"))
+                      ->label(__("form.address"))
                     //   ->autocomplete("name")
                       ->defaultLocation([24.7136, 46.6753])
                       ->defaultZoom(12)
@@ -54,7 +60,8 @@ class BranchResource extends Resource
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('name')->label(__('form.branch')),
+                TextColumn::make('city.name')->label(__('form.city')),
             ])
             ->filters([
                 //
@@ -85,5 +92,13 @@ class BranchResource extends Resource
             'view' => Pages\ViewBranch::route('/{record}'),
             'edit' => Pages\EditBranch::route('/{record}/edit'),
         ];
+    }
+
+    public static function getModelLabel () :string {
+        return __('form.branch');
+    }
+
+    public static function getPluraModelLabel (): string {
+        return __('form.branch');
     }
 }

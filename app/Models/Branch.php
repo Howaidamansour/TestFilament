@@ -16,15 +16,20 @@ class Branch extends Model
     ];
 
 
-    protected $cast = [
+    protected $casts = [
         'adddress' => 'json'
     ];
+
+    // public function getFormattedAddressAttribute()
+    // {
+    //     return isset($this->attributes['adddress']['your_key']) ? $this->attributes['adddress']['your_key'] : null;
+    // }
 
     public function city () {
         return $this->belongsTo(City::class);
     }
 
     public function product () {
-        return $this->hasMany(ProductBranches::class);
+        return $this->hasMany(Product::class);
     }
 }

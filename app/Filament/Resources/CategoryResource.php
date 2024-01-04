@@ -14,18 +14,22 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
+use Filament\Tables\Columns\TextColumn;
+
 class CategoryResource extends Resource
 {
     protected static ?string $model = Category::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
+    public static function getNavigationLabel (): string {
+        return __('form.category');
+      }
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                TextInput::make('name')->required()->string()->maxLength(255),
-                FileUpload::make('image')->image()
+                TextInput::make('name')->required()->string()->maxLength(255)->label(__('form.category')),
+                FileUpload::make('image')->image()->label(__('form.image'))
             ]);
     }
 
@@ -33,7 +37,7 @@ class CategoryResource extends Resource
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('name')->label(__('form.category'))
             ])
             ->filters([
                 //
@@ -62,5 +66,14 @@ class CategoryResource extends Resource
             'create' => Pages\CreateCategory::route('/create'),
             'edit' => Pages\EditCategory::route('/{record}/edit'),
         ];
+    }
+
+
+    public static function getModelLabel () :string {
+        return __('form.category');
+    }
+
+    public static function getPluraModelLabel (): string {
+        return __('form.category');
     }
 }

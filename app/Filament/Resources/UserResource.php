@@ -20,14 +20,16 @@ class UserResource extends Resource
     protected static ?string $model = User::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
-
+    public static function getNavigationLabel (): string {
+        return __('form.user');
+      }
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                TextInput::make('name')->required(),
-                TextInput::make('email')->email()->required(),
-                TextInput::make('password')->password()->required()
+                TextInput::make('name')->required()->label(__('form.name')),
+                TextInput::make('email')->email()->required()->label(__('form.email')),
+                TextInput::make('password')->password()->required()->label(__('form.password'))
             ]);
     }
 
@@ -67,5 +69,13 @@ class UserResource extends Resource
             'create' => Pages\CreateUser::route('/create'),
             'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
+    }
+
+    public static function getModelLabel () :string {
+        return __('form.user');
+    }
+
+    public static function getPluraModelLabel (): string {
+        return __('form.user');
     }
 }
