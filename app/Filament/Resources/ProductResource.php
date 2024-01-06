@@ -17,6 +17,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ImageColumn;
 
 class ProductResource extends Resource
 {
@@ -45,7 +46,16 @@ class ProductResource extends Resource
                                             ->searchable()
                                             ->preload()
                                             ->required()->label(__('form.branch')),
-                FileUpload::make('image')->image()->label(__('form.image'))
+                FileUpload::make('image')->image()->label(__('form.image')),
+
+                FileUpload::make('images')->image()
+                        // ->cloumns(1)
+                        ->multiple()
+                        ->directory('additional_images')
+                        ->enableReordering()
+                        ->enableDownload()
+                        ->storeFileNamesIn('images_name')
+                        ->label(__('form.additional_images'))
             ]);
     }
 
@@ -56,6 +66,7 @@ class ProductResource extends Resource
                 TextColumn::make('name')->label(__('form.product')),
                 TextColumn::make('price')->label(__('form.price')),
                 TextColumn::make('quantity')->label(__('form.quantity')),
+                ImageColumn::make('image'),
                 TextColumn::make('category.name')->label(__('form.category')),
                 TextColumn::make('branch.name')->label(__('form.branch'))
             ])
@@ -76,8 +87,8 @@ class ProductResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
-        ];
+            RelationManagers\ImageRelationManager::class,
+                ];
     }
 
     public static function getPages(): array

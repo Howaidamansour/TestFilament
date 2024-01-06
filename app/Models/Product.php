@@ -17,7 +17,9 @@ class Product extends Model
         'quantity',
         'category_id',
         'image',
-        'branch_id'
+        'branch_id',
+        'images',
+        'images_name'
     ];
 
     public function category () {
@@ -31,4 +33,9 @@ class Product extends Model
     public function branch () {
         return $this->belongsTo(Branch::class);
     }
+
+    protected $casts = [
+        'images' => 'array',
+        'images_name' => 'array'
+    ];
 }

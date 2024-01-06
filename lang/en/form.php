@@ -17,5 +17,6 @@ return [
 'user' => 'User',
 'email' => 'Email',
 'password' => 'Password',
+'additional_images' => 'Additionl Images',
 
 ];
