@@ -36,5 +36,6 @@ class City extends Model implements HasMedia
     protected $casts = [
         'name' => 'json',
 
+
     ];
 }

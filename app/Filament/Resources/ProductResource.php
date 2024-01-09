@@ -21,6 +21,8 @@ use Filament\Tables\Columns\ImageColumn;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use App\Traits\Filament\HasTranslationLabel;
 use Filament\Resources\Concerns\Translatable;
+use Illuminate\Database\Eloquent\Model;
+
 class ProductResource extends Resource
 {
     use Translatable;
@@ -45,6 +47,7 @@ class ProductResource extends Resource
                 Select::make('category_id')->relationship('category', 'name')
                                             ->searchable()
                                             ->preload()
+                                            ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->name}")
                                             ->required()->label(__('form.category')),
                 
                 SpatieMediaLibraryFileUpload::make('Image')->collection('images')->label(__('form.image')),

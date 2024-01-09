@@ -39,7 +39,7 @@ class Product extends Model implements HasMedia
     public function branches () {
         return $this->belongsToMany(Branch::class, 'product_branches')->withTimestamps();
     }
-    public $translatable = ['name'];
+    public $translatable = ['name', 'description'];
 
     protected $casts = [
         'name' => 'json',

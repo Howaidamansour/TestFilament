@@ -20,6 +20,7 @@ use Filament\Forms\Components\Section;
 use Cheesegrits\FilamentGoogleMaps\Fields\Map;
 use App\Traits\Filament\HasTranslationLabel;
 use Filament\Resources\Concerns\Translatable;
+use Illuminate\Database\Eloquent\Model;
 
 
 class BranchResource extends Resource
@@ -44,7 +45,17 @@ class BranchResource extends Resource
                       ->searchable()
                       ->preload()
                       ->required()
+                ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->name}")
                       ->label(__('form.city')),
+                
+ 
+                // Select::make('city_id')
+                //     ->relationship(
+                //         'city',
+                //         'name',
+                //     )
+                //     ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->name}")
+                //     ,
 
                 Map::make("adddress")
                       ->label(__("form.address"))
@@ -62,6 +73,7 @@ class BranchResource extends Resource
                     ->searchable()
                     ->preload()
                     ->relationship('products', 'name')
+                    ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->name}")
                 ]),
             ]);
     }
