@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Schema::table('products', function (Blueprint $table) {
-        //     $table->foreignId('branch_id')->constrained('branches')->onDelete('cascade')->onUpdate('cascade');
-        // });
+        Schema::table('products', function (Blueprint $table) {
+            $table->dropColumn('image');
+            $table->dropColumn('images');
+            $table->dropColumn('images_name');
+        });
     }
 
     /**
@@ -21,9 +23,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        // Schema::table('products', function (Blueprint $table) {
-        //     $table->dropColumn('branch_id');
-
-        // });
+        Schema::table('products', function (Blueprint $table) {
+            //
+        });
     }
 };

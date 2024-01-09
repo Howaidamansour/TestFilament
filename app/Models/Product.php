@@ -6,9 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-class Product extends Model
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\Translatable\HasTranslations;
+
+class Product extends Model implements HasMedia
 {
-    use HasFactory;
+    use HasFactory, InteractsWithMedia, HasTranslations;
 
     protected $fillable = [
         'name',
@@ -16,10 +21,11 @@ class Product extends Model
         'price',
         'quantity',
         'category_id',
-        'image',
+      
         'branch_id',
-        'images',
-        'images_name'
+       
+        'ar_name',
+        'ar_description', 	
     ];
 
     public function category () {
@@ -30,12 +36,16 @@ class Product extends Model
         return $this->hasMany(Image::class);
     }
 
-    public function branch () {
-        return $this->belongsTo(Branch::class);
+    public function branches () {
+        return $this->belongsToMany(Branch::class, 'product_branches')->withTimestamps();
     }
+    public $translatable = ['name'];
 
     protected $casts = [
+        'name' => 'json',
+        'description' => 'json',
         'images' => 'array',
-        'images_name' => 'array'
+        'images_name' => 'array',
+
     ];
 }

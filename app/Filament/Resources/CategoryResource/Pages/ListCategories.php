@@ -10,9 +10,12 @@ class ListCategories extends ListRecords
 {
     protected static string $resource = CategoryResource::class;
 
+    use ListRecords\Concerns\Translatable;
+
     protected function getHeaderActions(): array
     {
         return [
+            Actions\LocaleSwitcher::make(),
             Actions\CreateAction::make(),
         ];
     }

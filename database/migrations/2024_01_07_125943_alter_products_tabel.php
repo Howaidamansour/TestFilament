@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         // Schema::table('products', function (Blueprint $table) {
-        //     $table->foreignId('branch_id')->constrained('branches')->onDelete('cascade')->onUpdate('cascade');
+        //     $table->string('ar_name');
+        //     $table->longText('ar_description');
         // });
     }
 
@@ -22,8 +23,8 @@ return new class extends Migration
     public function down(): void
     {
         // Schema::table('products', function (Blueprint $table) {
-        //     $table->dropColumn('branch_id');
-
+        //     $table->dropColumn('ar_name');
+        //     $tabel->dropColumn('ar_description');
         // });
     }
 };

@@ -10,9 +10,12 @@ class ListCities extends ListRecords
 {
     protected static string $resource = CityResource::class;
 
+    use ListRecords\Concerns\Translatable;
+
     protected function getHeaderActions(): array
     {
         return [
+            Actions\LocaleSwitcher::make(),
             Actions\CreateAction::make(),
         ];
     }

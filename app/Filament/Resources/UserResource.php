@@ -14,14 +14,21 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Infolists\Infolist;
+use App\Traits\Filament\HasTranslationLabel;
+use Filament\Resources\Concerns\Translatable;
 
 class UserResource extends Resource
 {
+    // use HasTranslationLabel;
+    // use Translatable;
+    use Translatable;
+
     protected static ?string $model = User::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
     public static function getNavigationLabel (): string {
-        return __('form.user');
+        return __('form.user'); 
       }
     public static function form(Form $form): Form
     {
@@ -38,8 +45,8 @@ class UserResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('id'),
-                TextColumn::make('name'),
-                TextColumn::make('email')
+                TextColumn::make('name')->searchable()->label(__('form.name')),
+                TextColumn::make('email')->label(__('form.email'))
 
             ])
             ->filters([
@@ -47,6 +54,8 @@ class UserResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                // Tables\Actions\DeleteBulkAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -71,11 +80,22 @@ class UserResource extends Resource
         ];
     }
 
-    public static function getModelLabel () :string {
-        return __('form.user');
+    // public static function getModelLabel () :string {
+    //     // dd(445);
+    //     return __('form.user');
+    // }
+
+    public static function getTranslatableLocales(): array
+    {
+        return ['en', 'ar'];
     }
 
     public static function getPluraModelLabel (): string {
         return __('form.user');
     }
+
+    public static function getGloballySearchableAttributes(): array
+{
+    return ['name'];
+}
 }

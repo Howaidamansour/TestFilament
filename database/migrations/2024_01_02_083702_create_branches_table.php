@@ -14,7 +14,7 @@ return new class extends Migration
 
         Schema::create('branches', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->json('name');
             $table->foreignId('city_id')->constrained('cities')->onDelete('cascade')->onUpdate('cascade');
             $table->string('location');
             $table->double('latitude', 10, 6); 

@@ -4,32 +4,31 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-class Branch extends Model
+use Spatie\Translatable\HasTranslations;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\HasMedia;
+class Branch extends Model implements HasMedia
 {
-    use HasFactory; 
+    use HasFactory, HasTranslations, InteractsWithMedia ;
     protected $fillable = [
         'name',
         'city_id',
-       'adddress'
+       'adddress',
+     
     ];
 
 
     protected $casts = [
-        'adddress' => 'json'
+        'adddress' => 'json',
+        'name' => 'json'
     ];
-
-    // public function getFormattedAddressAttribute()
-    // {
-    //     return isset($this->attributes['adddress']['your_key']) ? $this->attributes['adddress']['your_key'] : null;
-    // }
+    public $translatable = ['name'];
 
     public function city () {
         return $this->belongsTo(City::class);
     }
 
-    public function product () {
-        return $this->hasMany(Product::class);
+    public function products () {
+        return $this->belongsToMany(Product::class, 'product_branches')->withTimestamps();
     }
 }

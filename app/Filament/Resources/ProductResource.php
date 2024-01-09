@@ -18,9 +18,12 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ImageColumn;
-
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
+use App\Traits\Filament\HasTranslationLabel;
+use Filament\Resources\Concerns\Translatable;
 class ProductResource extends Resource
 {
+    use Translatable;
     protected static ?string $model = Product::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
@@ -34,28 +37,28 @@ class ProductResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('name')->required()->string()->maxLength(255)->label(__('form.product')),
+                TextInput::make('name')->required()->string()->maxLength(255)->label(__('form.name')),
                 Textarea::make('description')->label(__('form.description')),
-                TextInput::make('price')->required()->numeric()->label(__('form.price')) ,
+                
+                   TextInput::make('price')->required()->numeric()->label(__('form.price')) ,
                 TextInput::make('quantity')->required()->integer()->label(__('form.quantity')),
                 Select::make('category_id')->relationship('category', 'name')
                                             ->searchable()
                                             ->preload()
                                             ->required()->label(__('form.category')),
-                Select::make('branch_id')->relationship('branch', 'name')
-                                            ->searchable()
-                                            ->preload()
-                                            ->required()->label(__('form.branch')),
-                FileUpload::make('image')->image()->label(__('form.image')),
+                
+                SpatieMediaLibraryFileUpload::make('Image')->collection('images')->label(__('form.image')),
+                SpatieMediaLibraryFileUpload::make('Additional Images')->multiple()->collection('additinal images')->label(__('form.additional_images')),
 
-                FileUpload::make('images')->image()
-                        // ->cloumns(1)
-                        ->multiple()
-                        ->directory('additional_images')
-                        ->enableReordering()
-                        ->enableDownload()
-                        ->storeFileNamesIn('images_name')
-                        ->label(__('form.additional_images'))
+
+                // FileUpload::make('images')->image()
+                //         // ->cloumns(1)
+                //         ->multiple()
+                //         ->directory('additional_images')
+                //         ->enableReordering()
+                //         ->enableDownload()
+                //         ->storeFileNamesIn('images_name')
+                //         ->label(__('form.additional_images'))
             ]);
     }
 
@@ -63,12 +66,11 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name')->label(__('form.product')),
+                TextColumn::make('name')->searchable()->label(__('form.name')),
                 TextColumn::make('price')->label(__('form.price')),
                 TextColumn::make('quantity')->label(__('form.quantity')),
-                ImageColumn::make('image'),
+                // ImageColumn::make('image'),
                 TextColumn::make('category.name')->label(__('form.category')),
-                TextColumn::make('branch.name')->label(__('form.branch'))
             ])
             ->filters([
                 //
@@ -76,6 +78,7 @@ class ProductResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -108,5 +111,10 @@ class ProductResource extends Resource
 
     public static function getPluraModelLabel (): string {
         return __('form.product');
+    }
+
+    public static function getTranslatableLocales(): array
+    {
+        return ['en', 'ar'];
     }
 }

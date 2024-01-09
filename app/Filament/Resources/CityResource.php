@@ -16,8 +16,11 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
+use App\Traits\Filament\HasTranslationLabel;
+use Filament\Resources\Concerns\Translatable;
 class CityResource extends Resource
 {
+    use Translatable;
     protected static ?string $model = City::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
@@ -28,7 +31,8 @@ class CityResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('name')->label(__('form.name'))
+                TextInput::make('name')->label(__('form.name')),
+               
             ]);
     }
 
@@ -37,13 +41,16 @@ class CityResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('id'),
-                TextColumn::make('name')->label(__('form.city')),
+                TextColumn::make('name')->searchable()->label(__('form.name')),
+              
+
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -67,7 +74,10 @@ class CityResource extends Resource
             'edit' => Pages\EditCity::route('/{record}/edit'),
         ];
     }
-
+    public static function getTranslatableLocales(): array
+    {
+        return ['en', 'ar'];
+    }
     public static function getModelLabel () :string {
         return __('form.city');
     }

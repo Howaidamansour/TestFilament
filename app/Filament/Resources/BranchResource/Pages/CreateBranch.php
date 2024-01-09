@@ -9,6 +9,15 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateBranch extends CreateRecord
 {
     protected static string $resource = BranchResource::class;
+    use CreateRecord\Concerns\Translatable;
+ 
+    protected function getHeaderActions(): array
+    {
+        return [
+            Actions\LocaleSwitcher::make(),
+            // ...
+        ];
+    }
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         // dd($data);

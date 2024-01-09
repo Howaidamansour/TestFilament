@@ -4,12 +4,20 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
-class Category extends Model
+use Spatie\Translatable\HasTranslations;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\HasMedia;
+class Category extends Model implements HasMedia
 {
-    use HasFactory;
+    use HasFactory, HasTranslations, InteractsWithMedia ;
     protected $fillable = [
         'name',
-        'image'
+        'image',
+        'ar_name'
     ];
+
+protected $casts = [
+        'name' => 'json'
+    ];
+    public $translatable = ['name'];
 }

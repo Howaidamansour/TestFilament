@@ -16,11 +16,15 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\Section;
 use Cheesegrits\FilamentGoogleMaps\Fields\Map;
+use App\Traits\Filament\HasTranslationLabel;
+use Filament\Resources\Concerns\Translatable;
 
 
 class BranchResource extends Resource
 {
+    use Translatable;
     protected static ?string $model = Branch::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
@@ -34,8 +38,8 @@ class BranchResource extends Resource
         return $form
             ->schema([
                 TextInput::make('name')
-                ->label( __('form.branch_name'))->required(),
-
+                ->label( __('form.name'))->required(),
+                
                 Select::make('city_id')->relationship('city', 'name')
                       ->searchable()
                       ->preload()
@@ -52,7 +56,13 @@ class BranchResource extends Resource
                       ->columnSpan(2)
                       ->required()
                       ->geolocate(),
-
+                Section::make('Products')->schema([
+                    Select::make('products')
+                    ->multiple()
+                    ->searchable()
+                    ->preload()
+                    ->relationship('products', 'name')
+                ]),
             ]);
     }
 
@@ -60,7 +70,7 @@ class BranchResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name')->label(__('form.branch')),
+                TextColumn::make('name')->searchable()->label(__('form.name')),
                 TextColumn::make('city.name')->label(__('form.city')),
             ])
             ->filters([
@@ -69,6 +79,7 @@ class BranchResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -100,5 +111,10 @@ class BranchResource extends Resource
 
     public static function getPluraModelLabel (): string {
         return __('form.branch');
+    }
+
+    public static function getTranslatableLocales(): array
+    {
+        return ['en', 'ar'];
     }
 }
